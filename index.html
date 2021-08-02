@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input type="text" id="weatherDetac" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-danger" id="sButton">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+           <div id="wevIcon">
+            </div>
+           <!--  <img src="https://openweathermap.org/img/wn/02d@2x.png" alt=""> -->
+            <h1 id="city" style="text-transform: uppercase;margin-top: 20px">Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 class="lead" id="lead">Clouds</h1>
+        </div>
+    </div>
+
+    <script>
+        function weather(){
+            const weatherDetac = document.getElementById('weatherDetac').value;
+            let wevIcon = document.getElementById('wevIcon');
+
+            fetch('http://api.openweathermap.org/data/2.5/weather?q='+weatherDetac+'&appid=696a5f667d8cb897d71cfe946282c4a1')
+            .then(res=> res.json())
+            .then(data=>{
+                const cityName=document.getElementById('city').innerText=weatherDetac;
+                const Temperature = document.getElementById('temp').innerText=data.main.temp;
+                const lead =document.getElementById('lead').innerText=data.weather[0].main;
+               if(data.weather[0].main === 'Clouds'){
+                    wevIcon.innerHTML = `<i class="fas fa-cloud" style='font-size: 70px'></i>`
+               }
+               else if(data.weather[0].main === 'Rain'){
+                    wevIcon.innerHTML = `<i class="fas fa-cloud-rain" style='font-size: 70px'></i>`
+               }
+               else if(data.weather[0].main === 'Haze'){
+                    wevIcon.innerHTML = `<i class="far fa-sun" style='font-size: 70px'></i>`
+               }
+
+
+            })
+
+        }
+        document.getElementById('sButton').addEventListener('click',function(){
+            weather();
+            
+            document.getElementById('weatherDetac').value='';
+
+        });
+        const cityName=document.getElementById('city').innerText='';
+        const Temperature = document.getElementById('temp').innerText='00';
+        const lead =document.getElementById('lead').innerText='';
+        
+    </script>
+
+</body>
+
+</html>
